@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+import sqlite3
+
 import json
 from flask import Flask
 from flask import request
 from flask import redirect
 from flask import jsonify
+
+import dao
+
 app = Flask(__name__)
 
 @app.route('/' , methods=['GET', 'POST'])
@@ -27,5 +32,17 @@ def login():
     #if request.method == 'GET':
     #    return 'ciao ciao:' + request.form['username']
 	
+#获得不同mediaType的统计
+@app.route('/getCountByMediaType', methods=['POST', 'GET'])
+def getCountByMediaType():
+        
+    return dao.CountByMediaType()
+    #if request.method == 'GET':
+    #    return 'ciao ciao:' + request.form['username']
+    
+    
+    
+    
+    
 if __name__ =='__main__':
     app.run(debug=True)
