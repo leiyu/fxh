@@ -1,0 +1,415 @@
+<html>
+	<head>
+		<meta http-equiv=Content-Type content="text/html;charset=utf-8">
+		<!-- 引入 echarts.js -->
+	    <script type="text/javascript" src="echarts.js"></script>
+	    <!-- 引入jquery.js -->
+	    <script type="text/javascript" src="jquery.min.js"></script>
+		<link rel="stylesheet" href="bootstrap.min.css">
+		<link rel="stylesheet" href="bootstrap-table.css">
+		<script src="bootstrap.min.js"></script>
+		<script src="bootstrap-table.js"></script>
+		<script src="bootstrap-table-zh-CN.js"></script>		
+	</head>
+	<body>
+		<!-- 媒体类型 -->
+    	<div id="mediaType" style="width: 900px;height:500px;"></div>
+	
+		<script type="text/javascript">
+			var a = echarts;
+			var myChart = a.init(document.getElementById('mediaType'));
+			 // 显示标题，图例和空的坐标轴
+			 myChart.setOption({
+				 title: {
+					 text: '媒体类型',
+					 //subtext: '不同类型媒体声量统计'
+					 x:'center'
+					 
+				 },
+			legend: {
+				orient: 'vertical',
+				x: 'left',
+				data:[]
+				//data:['微信','微博','新闻','知道','视频','论坛','贴吧']
+				},
+				tooltip : {
+					trigger: 'item',
+					formatter: "{a} <br/>{b} : {c} ({d}%)"
+				},
+				toolbox: {
+					show : true,
+					feature : {
+						mark : {show: true},
+						dataView : {show: true, readOnly: false},
+						magicType : {
+							show: true, 
+							type: ['pie', 'funnel'],
+							option: {
+								funnel: {
+									x: '25%',
+									width: '50%',
+									funnelAlign: 'center',
+									max: 1548
+								}
+							}
+						},
+						restore : {show: true},
+						saveAsImage : {show: true}
+					}
+				},
+				calculable : true,
+
+				series : [
+					{
+						name:'媒体类型：',
+						type:'pie',
+						radius : ['50%', '70%'],
+						itemStyle : {
+							normal : {
+								label : {
+									show : false
+								},
+								labelLine : {
+									show : false
+								}
+							},
+							emphasis : {
+								label : {
+									show : true,
+									position : 'center',
+									textStyle : {
+										fontSize : '30',
+										fontWeight : 'bold'
+									}
+								}
+							}
+						}
+					}
+				]
+			 });
+			 myChart.showLoading();    //数据加载完之前先显示一段简单的loading动画
+			 var names=[];    //名称数组（实际用来盛放X轴坐标值）
+			 var nums=[];    //数量数组（实际用来盛放Y坐标值）
+			 var jsonString = '';		 
+			 $.ajax({
+			 type : "get",
+	//       async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+			 url : "http://localhost:5000/getCountByMediaType",    //请求发送到Servlet处
+	//       data : {},
+			 dataType : "json",        //返回数据形式为json
+			 success : function(result) {
+				 //请求成功时执行该函数内容，result即为服务器返回的json对象
+				 if (result) {
+						for(var i=0;i<result.length;i++){
+						   names.push(result[i][0]);
+						   nums.push(result[i][1]);
+						   jsonString = jsonString + "{\"value\":" + result[i][1] + ", \"name\":\"" + result[i][0] + "\"},";
+						 }
+						jsonString = jsonString.substring(0, jsonString.length -1);
+						var jsonObj=JSON.parse("[" + jsonString + "]");	
+						myChart.hideLoading();    //隐藏加载动画
+						myChart.setOption({        //加载数据图表
+							legend: {
+								data: names					
+							},
+							series: [{
+								// 根据名字对应到相应的系列
+								//name: names,
+								data: jsonObj
+								//data: dataItems
+							}]
+						});					
+						
+
+				 }
+
+			},
+			 error : function(errorMsg) {
+				 //请求失败时执行该函数
+			 alert("图表请求数据失败!");		 
+			 myChart.hideLoading();
+			 }
+		})
+		</script>
+			
+	
+		<!-- 网站名 -->
+    	<div id="webName" style="width: 900px;height:500px;"></div>
+	
+		<script type="text/javascript">
+			//var a = echarts;
+			var webChart = a.init(document.getElementById('webName'));
+			 // 显示标题，图例和空的坐标轴
+			 webChart.setOption({
+				 title: {
+					 text: '网站名称',					 
+					 x:'center'
+				 },
+			legend: {
+				orient: 'vertical',
+				x: 'left',
+				data:[]
+				//data:['微信','微博','新闻','知道','视频','论坛','贴吧']
+				},
+				tooltip : {
+					trigger: 'item',
+					formatter: "{a} <br/>{b} : {c} ({d}%)"
+				},
+				toolbox: {
+					show : true,
+					feature : {
+						mark : {show: true},
+						dataView : {show: true, readOnly: false},
+						magicType : {
+							show: true, 
+							type: ['pie', 'funnel'],
+							option: {
+								funnel: {
+									x: '25%',
+									width: '50%',
+									funnelAlign: 'center',
+									max: 1548
+								}
+							}
+						},
+						restore : {show: true},
+						saveAsImage : {show: true}
+					}
+				},
+				calculable : true,
+
+				series : [
+					{
+						name:'媒体类型：',
+						type:'pie',
+						radius : ['50%', '70%'],
+						itemStyle : {
+							normal : {
+								label : {
+									show : false
+								},
+								labelLine : {
+									show : false
+								}
+							},
+							emphasis : {
+								label : {
+									show : true,
+									position : 'center',
+									textStyle : {
+										fontSize : '30',
+										fontWeight : 'bold'
+									}
+								}
+							}
+						}
+					}
+				]
+			 });
+			 webChart.showLoading();    //数据加载完之前先显示一段简单的loading动画
+			 var webNames=[];    //名称数组（实际用来盛放X轴坐标值）
+			 var webNums=[];    //数量数组（实际用来盛放Y坐标值）
+			 var jsonStringWeb = '';		 
+			 $.ajax({
+			 type : "get",
+	//       async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+			 url : "http://localhost:5000/getCountByWebName",    //请求发送到Servlet处
+	//       data : {},
+			 dataType : "json",        //返回数据形式为json
+			 success : function(result) {
+				 //请求成功时执行该函数内容，result即为服务器返回的json对象
+				 if (result) {
+						for(var i=0;i<result.length;i++){
+						   webNames.push(result[i][0]);
+						   webNums.push(result[i][1]);
+						   jsonStringWeb = jsonStringWeb + "{\"value\":" + result[i][1] + ", \"name\":\"" + result[i][0] + "\"},";
+						 }
+						jsonStringWeb = jsonStringWeb.substring(0, jsonStringWeb.length -1);
+						var jsonObjWeb = JSON.parse("[" + jsonStringWeb + "]");	
+						webChart.hideLoading();    //隐藏加载动画
+						webChart.setOption({        //加载数据图表
+							legend: {
+								data: webNames					
+							},
+							series: [{
+								// 根据名字对应到相应的系列
+								//name: names,
+								data: jsonObjWeb
+								//data: dataItems
+							}]
+						});					
+						
+
+				 }
+
+			},
+			 error : function(errorMsg) {
+				 //请求失败时执行该函数
+			 alert("图表请求数据失败!");		 
+			 webChart.hideLoading();
+			 }
+		})
+		</script>
+	
+			<!-- 帖子总数时序图 -->
+    	<div id="articlesByDate" style="width: 900px;height:500px;"></div>
+	
+		<script type="text/javascript">
+			//var a = echarts;
+			var arChart = a.init(document.getElementById('articlesByDate'));
+			 // 显示标题，图例和空的坐标轴
+			 arChart.setOption({
+				 title: {
+					 text: '文章总量',					 
+					 x:'center'
+				 },
+				  tooltip: {
+					trigger: 'axis'
+				},
+				 toolbox: {
+					feature: {
+						saveAsImage: {}				
+					}
+				},
+				 xAxis: {
+					type: 'category',
+					boundaryGap: false,
+					data: []
+				},
+				yAxis: {
+					type: 'value'
+				},
+				 series: [
+				{
+					name:'文章总量',
+					type:'line',
+					stack: '总量',
+					data:[]
+				}				
+				]
+			 });
+			 arChart.showLoading();    //数据加载完之前先显示一段简单的loading动画
+			 var arrDate=[];    //时间数组（实际用来盛放X坐标值）
+			 var arrNums=[];    //数量数组（实际用来盛放Y坐标值）
+			 var jsArticle = '';		 
+			 $.ajax({
+			 type : "get",
+	//       async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+			 url : "http://localhost:5000/getArticleByDate",    //请求发送到Servlet处
+	//       data : {},
+			 dataType : "json",        //返回数据形式为json
+			 success : function(result) {
+				 //请求成功时执行该函数内容，result即为服务器返回的json对象
+				 if (result) {
+						for(var i=0;i<result.length;i++){
+						   arrDate.push(result[i][0]);
+						   arrNums.push(result[i][1]);
+						   jsArticle = jsArticle + "{\"value\":" + result[i][1] + ", \"name\":\"" + result[i][0] + "\"},";
+						 }
+						jsArticle = jsArticle.substring(0, jsArticle.length -1);
+						var joArticle = JSON.parse("[" + jsArticle + "]");	
+						arChart.hideLoading();    //隐藏加载动画
+						arChart.setOption({        //加载数据图表
+							xAxis: {
+								type: 'category',
+								boundaryGap: false,
+								data: arrDate
+							},
+							yAxis: {
+								type: 'value'
+							},
+							
+							series: [{
+								name:'文章数量',
+								type:'line',
+								stack: '总量',
+								data: arrNums 
+
+							}]
+						});					
+						
+
+				 }
+
+			},
+			 error : function(errorMsg) {
+				 //请求失败时执行该函数
+			 alert("图表请求数据失败!");		 
+			 webChart.hideLoading();
+			 }
+		})
+		</script>
+	
+	<div style="width: 80%;margin: 0 auto">
+    <table id="table" ></table>
+</div>
+
+<table id="cusTable">
+    <thead>
+        <tr>
+            <th data-field="id">ID</th>
+            <th data-field="mediaType">媒体类型</th>
+            <th data-field="webName">网站</th>
+			<th data-field="topicTitle">标题</th>
+			<th data-field="author">作者</th>
+			<th data-field="topicLink">链接</th>
+			<th data-field="DtopicKind">话题属性</th>
+			<th data-field="viewNum">浏览次数</th>
+			<th data-field="replyNum">回复次数</th>			
+			<th data-field="pubTime">发布时间</th>
+			
+        </tr>
+    </thead>
+</table>
+
+<script type="text/javascript">            
+      function initTable() {  
+        //先销毁表格  
+        $('#cusTable').bootstrapTable('destroy');  
+        //初始化表格,动态从服务器加载数据  
+        $("#cusTable").bootstrapTable({  
+            method: "get",  //使用get请求到服务器获取数据  
+            url: "/getArticles", //获取数据的Servlet地址  
+            striped: true,  //表格显示条纹  
+            pagination: true, //启动分页  
+            pageSize: 10,  //每页显示的记录数  
+            pageNumber:1, //当前第几页  
+            pageList: [5, 10, 15, 20, 25],  //记录数可选列表  
+            search: false,  //是否启用查询  
+            showColumns: true,  //显示下拉框勾选要显示的列  
+            showRefresh: true,  //显示刷新按钮  
+            sidePagination: "server", //表示服务端请求  
+            //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder  
+            //设置为limit可以获取limit, offset, search, sort, order  
+            queryParamsType : "undefined",   
+            queryParams: function queryParams(params) {   //设置查询参数  
+              var param = {    
+                  pageNumber: params.pageNumber,    
+                  pageSize: params.pageSize,  
+                  //orderNum : $("#orderNum").val()  
+              };    
+              return param;                   
+            },  
+            //onLoadSuccess: function(){  //加载成功时执行  
+            //  alert("加载成功");  
+            //},  
+            onLoadError: function(){  //加载失败时执行  
+              alert("加载数据失败");  
+            }  
+          });  
+      }  
+  
+      $(document).ready(function () {          
+          //调用函数，初始化表格  
+          initTable();  
+  
+          //当点击查询按钮的时候执行  
+          $("#search").bind("click", initTable);  
+      });  
+</script>  
+
+
+	
+	
+	</body>
+</html>
