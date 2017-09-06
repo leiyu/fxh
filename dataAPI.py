@@ -3,7 +3,7 @@ import sqlite3
 
 import json
 from flask import Flask
-from flask import request
+from flask import request, session, escape, url_for
 from flask import redirect
 from flask import jsonify
 from flask import Response
@@ -79,9 +79,20 @@ def getArticles():
 #测试request
 @app.route('/testRequest')
 def test_request():
-    return 'currPage=' + request.args.get('pageNumber', '') + ',pageSize=' + request.args.get('pageSize', '')
+    if request.method == 'POST':
+	    return 'usr=' + request.form.get('username', 'error') + 'pass=' + request.form.get('password', 'error')
+    else:
+	    return 'currPage=' + request.args.get('pageNumber', '') + ',pageSize=' + request.args.get('pageSize', '')
 
-    
+#测试 Session
+@app.route('/testSession')
+def testSession():
+    #return session['username']
+    if 'username' in session:
+        return 'Logged in as %s' % escape(session['username'])
+    return 'You are not logged in'
+
+		
 #静态文件
 @app.route('/test')
 def test_html():
@@ -89,11 +100,34 @@ def test_html():
     
 #静态文件
 @app.route('/report')
-def test_report():
-    return send_file("report.html")
+def report():
+    if 'username' in session:
+        return send_file("report.html")
+    else:
+        return redirect(url_for('signin'))
+
+#登录
+@app.route('/signin')
+def signin():
+    return send_file("signin.html")
 
 
-    
+#验证用户名和密码
+@app.route('/signinAction', methods=['POST', 'GET'])
+def signinAction():	    
+    if request.method == 'POST':
+        if (request.form.get('username', 'error') == 'admin') and request.form.get('password', 'error') == 'test':
+            session['username'] = 'admin'
+            return redirect(url_for('report'))
+        else:
+            return '用户名密码不匹配'
+    else:
+        '错误的请求'
+	
+	
+	
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RTEFDE'    
     
 if __name__ =='__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000,debug=True)
+    #app.run(debug=True)

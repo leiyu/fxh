@@ -2,14 +2,14 @@
 	<head>
 		<meta http-equiv=Content-Type content="text/html;charset=utf-8">
 		<!-- 引入 echarts.js -->
-	    <script type="text/javascript" src="echarts.js"></script>
+	    <script type="text/javascript" src="https://cdn.bootcss.com/echarts/3.7.1/echarts.min.js"></script>
 	    <!-- 引入jquery.js -->
-	    <script type="text/javascript" src="jquery.min.js"></script>
-		<link rel="stylesheet" href="bootstrap.min.css">
-		<link rel="stylesheet" href="bootstrap-table.css">
-		<script src="bootstrap.min.js"></script>
-		<script src="bootstrap-table.js"></script>
-		<script src="bootstrap-table-zh-CN.js"></script>		
+	    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css">
+		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+		<script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>		
 	</head>
 	<body>
 		<!-- 媒体类型 -->
@@ -94,7 +94,7 @@
 			 $.ajax({
 			 type : "get",
 	//       async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-			 url : "http://localhost:5000/getCountByMediaType",    //请求发送到Servlet处
+			 url : "/getCountByMediaType",    //请求发送到Servlet处
 	//       data : {},
 			 dataType : "json",        //返回数据形式为json
 			 success : function(result) {
@@ -213,7 +213,7 @@
 			 $.ajax({
 			 type : "get",
 	//       async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-			 url : "http://localhost:5000/getCountByWebName",    //请求发送到Servlet处
+			 url : "/getCountByWebName",    //请求发送到Servlet处
 	//       data : {},
 			 dataType : "json",        //返回数据形式为json
 			 success : function(result) {
@@ -295,7 +295,7 @@
 			 $.ajax({
 			 type : "get",
 	//       async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-			 url : "http://localhost:5000/getArticleByDate",    //请求发送到Servlet处
+			 url : "/getArticleByDate",    //请求发送到Servlet处
 	//       data : {},
 			 dataType : "json",        //返回数据形式为json
 			 success : function(result) {
