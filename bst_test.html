@@ -3,13 +3,13 @@
 <head>
 <meta http-equiv=Content-Type content="text/html;charset=utf-8">
 
-<link rel="stylesheet" href="static/bootstrap.min.css">
-<link rel="stylesheet" href="static/bootstrap-table.css">
+<link rel="stylesheet" href="/bootstrap.min.css">
+<link rel="stylesheet" href="/bootstrap-table.css">
 
-<script src="static/jquery.min.js"></script>
-<script src="static/bootstrap.min.js"></script>
-<script src="static/bootstrap-table.js"></script>
-<script src="static/bootstrap-table-zh-CN.js"></script>
+<script src="/jquery.min.js"></script>
+<script src="/bootstrap.min.js"></script>
+<script src="/bootstrap-table.js"></script>
+<script src="/bootstrap-table-zh-CN.js"></script>
 </head>
 <body>
 
@@ -25,7 +25,7 @@
             <th data-field="webName">网站</th>
 			<th data-field="topicTitle">标题</th>
 			<th data-field="author">作者</th>
-			<th data-field="topicLink">链接</th>
+			<th data-field="topicLink" data-formatter="linkFormatter">链接</th>			
 			<th data-field="DtopicKind">话题属性</th>
 			<th data-field="viewNum">浏览次数</th>
 			<th data-field="replyNum">回复次数</th>			
@@ -79,6 +79,11 @@
           //当点击查询按钮的时候执行  
           $("#search").bind("click", initTable);  
       });  
+	  
+	  function linkFormatter(value,row,index){
+		  /*处理link*/
+		  return "<a href='" + value + "' target='_blank'>链接</a>";
+		}
 </script>  
 
 </body>
